@@ -1,0 +1,47 @@
+<html>
+<script>
+
+var fibonacciCount;
+var items = 35;
+
+var fibonacci1 = function (n) {
+  fibonacciCount++;
+  return (n < 2) ? n : fibonacci1(n - 1) + fibonacci1(n - 2);
+};
+
+var fibonacci2 = (function (  ) {
+    var memo = [0, 1];
+    var fib = function (n) {
+        fibonacciCount++;
+        var result = memo[n];
+        if (typeof result !== 'number') {
+            result = fib(n - 1) + fib(n - 2);
+            memo[n] = result;
+        }
+        return result;
+    };
+    return fib;
+}());
+
+var experiment = function (title, fn) {
+  console.group();
+  console.log(title);
+  console.time(title);
+
+  fibonacciCount = 0;
+
+  for (var i = 0; i <= items; i += 1) {
+    fn(i);
+  }
+
+  console.log("items", items);
+  console.log("fibonacciCount", fibonacciCount);
+  console.timeEnd(title);
+  console.groupEnd();
+};
+
+experiment("recursive", fibonacci1);
+experiment("memoization", fibonacci2);
+
+</script>
+</html>

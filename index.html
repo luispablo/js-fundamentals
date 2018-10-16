@@ -1,0 +1,884 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>JS Fundamentals</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/night.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+        <section>
+          <h1 style="text-align: left">JS Fundamentals</h1>
+          <hr/>
+          <h3 style="text-align: right">
+            <img src="./img/cara_luispa_abuelito_128x128.png" style="float: right; margin-top: 0px; border: 0px; background-color: transparent; width: 115px"/>
+            <span style="float: right; padding-top: 25px; margin-right: 20px;">@luispablo</span>
+          </h3>
+        </section>
+        <section>
+          <img src="img/java_to_javascript.png" />
+        </section>
+        <section>
+          <h2>Why???</h2>
+        </section>
+        <section>
+          <h2>ECMAScript</h2>
+          <h3>(ES5, ES6 / ES2015)</h3>
+        </section>
+        <section>
+          <h2>Types</h2>
+          <br/>
+          <ul>
+            <li>number (64 bits floating point, as Double in Java)</li>
+            <li>string</li>
+            <li>boolean</li>
+            <!-- estos tres son inmutables -->
+            <li>null</li>
+            <li>undefined</li>
+            <li>object (functions, arrays, etc)</li>
+            <!--
+              The simple types of JavaScript are numbers, strings, booleans
+              (true and false), null, and undefined. All other values are objects.
+              Numbers, strings, and booleans are object-like in that they have
+              methods, but they are immutable.
+            -->
+          </ul>
+        </section>
+        <section>
+          <h2>Numbers</h2>
+          <br/>
+          <ul>
+            <li>NaN</li>
+            <!--
+              The value NaN is a number value that is the result of an operation
+              that cannot produce a normal result.
+            -->
+            <li>Infinity (values greater than 1.79769313486231570e+308)</li>
+            <li>Math</li>
+        </section>
+        <section>
+          <h2>Strings</h2>
+          <br/>
+          <p class="fragment current-visible">" vs '</p>
+          <p class="fragment current-visible">immutable</p>
+          <p class="fragment current-visible">===</p>
+          <!-- compara strings distintos con misma cant. caracteres, en mismo orden -->
+        </section>
+        <section>
+          <h2>Boolean</h2>
+          <h4>Falsy values</h4>
+          <br/>
+          <ul>
+            <li>false</li>
+            <li>null</li>
+            <li>undefined</li>
+            <li>""</li>
+            <li>0</li>
+            <li>NaN</li>
+          </ul>
+          <!--
+            all other values are truthy (including 'false')
+          -->
+        </section>
+        <section>
+          <h2>Object</h2>
+          <!--
+            definición:
+              mutable keyed collections
+              arrays are objects, functions are objects, regular expressions are
+              objects, and, of course, objects are objects. An object is a
+              container of properties, where a property has a name and a value.
+              A property name can be any string, including the empty string. A
+              property value can be any JavaScript value except for undefined
+
+              Objects are passed around by reference. They are never copied
+          -->
+        </section>
+        <section>
+          <h2>Object</h2>
+          <h4>Object literal</h4>
+          <br/>
+          <pre><code data-noescape>
+            var empty_object = {};
+
+            var stooge = {
+              "first-name": "Jerome", // quotes needed
+              last_name: "Howard" // quotes are optional
+            };
+          </code></pre>
+        </section>
+        <section>
+          <h2>Object</h2>
+          <h4>Properties retrieval</h4>
+          <br/>
+          <pre><code>
+            stooge["first-name"]     // "Jerome"
+            stooge["middle-name"]    // undefined
+            flight.departure.IATA    // recommended, if I know it exists
+          </code></pre>
+          <em>special cases</em>
+          <pre><code>
+            var person = anotherVar || "Tom";
+
+            var name = person && person.name;
+          </code></pre>
+          <!--
+            The undefined value is produced if an attempt is made to retrieve a nonexistent member:
+          -->
+        </section>
+        <section>
+          <h2>Functions</h2>
+          <br/>
+          <!--
+            Las funciones son objetos que son invocables. En lugar de estar
+            vinculados a Object.prototype están vinculadas a Function.prototype
+            (que se vincula a Object.prototype...)
+
+            cuatro partes de declaración de función:
+          -->
+          <pre><code>
+            var add = function add (a, b) {
+              return a + b;
+            };
+          </code></pre>
+        </section>
+        <section>
+          <h2>Functions</h2>
+          <h4>Closures</h4>
+          <br/>
+          <!--
+            el acceso de una función a las variables de la función que la contiene
+          -->
+          <pre><code>
+            function dummy (name) {
+              return function boob (lastName) {
+                // here we've access to lastName AND name
+              }
+            }
+          </code></pre>
+        </section>
+        <section>
+          <h2>Functions</h2>
+          <h4>Special parameters</h4>
+          <br/>
+          <p>
+            <strong>this</strong>
+            <br/>
+            <br/>
+            <strong>arguments</strong>
+          </p>
+          <!--
+            no importa si se usan menos, todos o más parámetros. Los de más se
+            ignoran y los faltantes llegan como undefined.
+            para tener parámetros dinámicos se puede usar arguments. Pero
+            tiene un error de diseño, si bien se comporta como un array, NO LO ES
+          -->
+        </section>
+        <section>
+          <h2>Functions</h2>
+          <h4>Special parameters - this</h4>
+          <br/>
+          <p>Depends on how it's invoked</p>
+          <ul>
+            <li>method invocation</li>
+            <li>function invocation</li>
+            <li>constructor invocation</li>
+            <li>apply invocation</li>
+          </ul>
+          <!--
+            - method invocation (es una propiedad de un objeto y se la invoca
+                                    con ., this es el objeto) métodos públicos
+            - function invocation (cuando no es parte de un objeto, en this
+                                  recibe el objeto global) esto es un error de
+                                  diseño acá aparece el problema de que un método
+                                  no puede ayudarse fácilmente de una función,
+                                  porque pierde this
+                                  un workaround es asignar this a una variable,
+                                  por convención, that
+                myObject.double = function (  ) {
+                  var that = this;    // Workaround.
+
+                  var helper = function (  ) {
+                      that.value = add(that.value, that.value);
+                  };
+
+                  helper(  );    // Invoke helper as a function.
+                };
+            - constructor invocation (esto es para emular lenguajes con clases, otro error de diseño)
+                cuando una función se invoca con 'new' se crea un objeto nuevo, y this queda
+                vinculado a este objeto
+                las funciones usadas así se llaman constructores
+                Se las llama con capitalize letters, y si no se invocan con 'new' generan problemas...
+                Este uso no está recomendado por Douglas
+            - apply invocation pattern
+                nos permite especificiar a nosotros el this, y los parámetros
+                var array = [3, 4];
+                var sum = add.apply(null, array);
+          -->
+        </section>
+        <section>
+          <h2>Functions</h2>
+          <h4>return</h4>
+          <br/><br/>
+          <!--
+            Si no se especifica return value, devuelve undefined. Cuando se
+            invoca con 'new' si lo que se retorna no es un objeto, devuelve this.
+          -->
+        </section>
+        <section>
+          <h2>Scope</h2>
+          <br/>
+          <pre><code>
+            var a = 1;
+
+            function add () {
+              var b = 2;
+            }
+
+            for (var i = 0; i < 15; i++) {
+              var c = 3;
+            }
+
+            // a, i y c exist, only b doesn't.
+          </code></pre>
+          <!--
+            Sólo function, y todas las variables declaradas al principio.
+            global space
+            no block scope
+          -->
+        </section>
+        <section>
+          <h2>Scope</h2>
+          <h4>Hoisting</h4>
+          <br/>
+          <pre><code>
+            function add () {
+              var a = 1;
+
+              // some more code
+
+              var b = 2;
+            }
+          </code></pre>
+        </section>
+        <section>
+          <h2>Scope</h2>
+          <h4>Closures</h4>
+          <br/>
+          <pre><code>
+            var quo = function (status) {
+                return {
+                    get_status: function (  ) {
+                        return status;
+                    }
+                };
+            };
+
+            // Make an instance of quo.
+
+            var myQuo = quo("amazed");
+
+            document.writeln(myQuo.get_status()); // => "amazed"
+          </code></pre>
+          <!--
+            Los closures generan un vínculo a variables de funciones que quizás
+            mueren mucho antes.
+            Mejora para objeto creado con new y un getter que no tiene uso:
+        -->
+        </section>
+        <section>
+          <h2>Scope</h2>
+          <h4>IIFE</h4>
+          <!-- Immediately-invoked function expression (IIFE) -->
+          <br/>
+          <pre><code>
+            (function () {
+              console.log("hi, man!");
+            }());
+
+            // => "hi, man!"
+          </pre></code>
+        </section>
+        <section>
+          <h2>Scopes</h2>
+          <h4>Callbacks</h4>
+          <br/>
+          <pre><code>
+            var printer = function (value) {
+              console.log("The result is: "+ value);
+            };
+
+            var add = function (a, b, callback) {
+              var result = a + b;
+              callback(result);
+            };
+
+            add(3, 7, printer); // => The result is: 10
+          </code></pre>
+          <!--
+            as a param to handle asyncronous code
+          -->
+        </section>
+        <section>
+          <h2>Scope</h2>
+          <h4>Module pattern</h4>
+          <br/>
+          <pre><code>
+            var serial_maker = function () {
+
+                var prefix = '';
+                var seq = 0;
+
+                return {
+                    set_prefix: function (p) { prefix = String(p); },
+                    set_seq: function (s) { seq = s; },
+                    gensym: function () {
+                        var result = prefix + seq;
+                        seq += 1;
+                        return result;
+                    }
+                };
+            };
+            var seqer = serial_maker();
+            seqer.set_prefix('Q');
+            seqer.set_seq(1000);
+            var unique = seqer.gensym(); // unique is "Q1000"
+          </code></pre>
+          <!--
+            útil para hacer objetos seguros
+          -->
+        </section>
+        <section>
+          <h2>Scopes</h2>
+          <h4>Curry</h4>
+          <br/>
+          <pre><code>
+            var add = function (num1) {
+              return function (num2) {
+                return num1 + num2;
+              };
+            };
+            var add1 = add(1);
+            console.log(add1(5)); // 6
+          </code></pre>
+        </section>
+        <section>
+          <h2>Scopes</h2>
+          <h4>Memoization (1 of 2)</h4>
+          <br/>
+          <p>With recursion:</p>
+          <pre><code>
+            var fibonacci = function (n) {
+                return n < 2 ? n : fibonacci(n − 1) + fibonacci(n − 2);
+            };
+
+            for (var i = 0; i <= 10; i += 1) {
+                document.writeln('// ' + i + ': ' + fibonacci(i));
+            }
+
+            // 0: 0
+            // 1: 1
+            // 2: 1
+            // 3: 2
+            // 4: 3
+            // 5: 5
+            // 6: 8
+            // 7: 13
+            // 8: 21
+            // 9: 34
+            // 10: 55 => 453 invocaciones a fibonacci
+          </code></pre>
+        </section>
+        <section>
+          <h2>Scopes</h2>
+          <h4>Memoization (2 de 2)</h4>
+          <br/>
+          <p>Improved with a cache or <em>memoization</em>
+          <pre><code>
+            var fibonacci = (function (  ) {
+                var memo = [0, 1];
+                var fib = function (n) {
+                    var result = memo[n];
+                    if (typeof result !== 'number') {
+                        result = fib(n − 1) + fib(n − 2);
+                        memo[n] = result;
+                    }
+                    return result;
+                };
+                return fib;
+            }( ));
+          </code></pre>
+        </section>
+        <section>
+          <h2>Cannot believe it!</h2>
+          <img class="stretch" src="img/sorprendido.gif" style="border: 0px"/>
+        </section>
+        <section>
+          <h2>Inheritance</h2>
+        </section>
+        <section>
+          <h2>Inheritance</h2>
+          <h4>Prototypal (1 of 2)</h4>
+          <br/>
+          <pre><code>
+            var Mammal = function (name) {
+                this.name = name;
+            };
+
+            Mammal.prototype.get_name = function (  ) {
+                return this.name;
+            };
+            Mammal.prototype.says = function (  ) {
+                return this.saying || '';
+            };
+
+            var Cat = function (name) {
+                this.name = name;
+                this.saying = 'meow';
+            };
+
+            // Replace Cat.prototype with a new instance of Mammal
+            Cat.prototype = new Mammal();
+          </code></pre>
+          <!--
+            javascript puede "heredar", pero de otros objetos, casi como un
+            clásico, pero además permite hacer otras cosas más potentes lo malo
+            es que sintácticamente "heredar" de un prototipo es un asco...
+            es un asco, porque lo hicieron para ser pseudoclásico y poder
+            heredar, el libro propone algo más simple si se quiere usar...
+
+            Every object is linked to a prototype object from which it can
+            inherit properties. All objects created from object literals are
+            linked to Object.prototype, an object that comes standard with
+            JavaScript.
+            Al pedir propiedad a objeto la busca ahí, luego en su prototipo,
+            luego en el prototipo del padre, etc (hasta Object.prototype). Si no
+            está en ninguno devuelve undefined. El prototipo es una entidad viva,
+            se puede modificar en runtime.
+          -->
+        </section>
+        <section>
+          <h2>Inheritance</h2>
+          <h4>Prototypal (2 of 2)</h4>
+          <br/>
+          Augmenting
+          <pre><code>
+            Cat.prototype.purr = function (n) {
+                var i, s = '';
+                for (i = 0; i < n; i += 1) {
+                    if (s) {
+                        s += '-';
+                    }
+                    s += 'r';
+                }
+                return s;
+            };
+            Cat.prototype.get_name = function () {
+                return this.says() + ' ' + this.name + ' ' + this.says();
+            };
+
+            var myCat = new Cat('Henrietta');
+            var says = myCat.says(); // 'meow'
+          </code></pre>
+          <!--
+            Se hicieron convenciones de usar Capital en los nombres para verlos
+            a simple vista, pero hay 1000 quilombos más. Mucho mejor es no usar
+            new y listo.
+          -->
+        </section>
+        <!-- section>
+          <h2>Inheritance</h2>
+          <h4>Object Specifiers</h4>
+          <br/>
+          <pre><code>
+            var myObject = maker(f, l, m, c, s);
+
+            // We can write:
+
+            var myObject = maker({
+              first: f,
+              last: l,
+              middle: m
+              state: s,
+              city: c
+            });
+          </code></pre>
+        </section -->
+        <section>
+          <h2>Inheritance</h2>
+          <h4>Functional</h4>
+          <br/>
+          <pre><code>
+            var mammal = function (spec) {
+              var that = {};
+              that.getName = function () { return spec.name; };
+              that.says = function () { return spec.saying || ''; };
+
+              return that;
+            };
+
+            var myMammal = mammal({ name: 'Herb' });
+
+            var cat = function (spec) {
+              spec.saying = spec.saying || "meow";
+              var that = mammal(spec);
+              that.getName = function () { return that.says() + ' ' + spec.name; };
+              return that;
+            };
+
+            var myCat = cat({name: 'Henrietta'});
+          </code></pre>
+        </section>
+        <section>
+          <h2>Arrays</h2>
+          <!--
+            Son objetos, con algunas características especiales y número por
+            claves.
+            array literals: [], como los objetos
+            los items del array pueden ser cualquier cosa
+          -->
+        </section>
+        <section>
+          <h2>Arrays</h2>
+          <h4>length</h4>
+          <br/>
+          <pre><code>
+            var myArray = [];
+            myArray.length             // 0
+
+            myArray[1000000] = true;
+            myArray.length             // 1000001
+            // myArray contains one property.
+          </code></pre>
+          <!--
+            Esta propiedad puede asignarse, si se pone algo más chico se borran
+            los items sobrantes
+            Se puede usar delete como con properties, pero deja un agujero en el
+            array, conviene splice.
+            No usar for...in, usar for común porque puede traer otras properties
+            y no respetar el orden.
+            Es difícil distinguir objetos de arrays, ni typeof lo hace bien
+            (dice object)
+          -->
+        </section>
+        <section>
+          <h2>Exceptions</h2>
+          <br/>
+          <pre><code>
+            try {
+              ...
+            } catch (e) {
+              ...
+            }
+          </code></pre>
+          <pre><code>
+            throw new Error("Some message");
+          </code></pre>
+          <pre><code>
+            var a = { message: "I'm an error" };
+            throw a;
+          </code></pre>
+        </section>
+        <section>
+          <h2>Regular expressions</h2>
+          <br/>
+          <h2>NO-FUC#!@NG-WAY</h2>
+        </section>
+        <section>
+          <h2>Good to know methods</h2>
+          <h4>Arrays</h4>
+          <br/>
+          <ul>
+            <li><strong>concat</strong> (a, b, ...)</li>
+            <li><strong>join</strong> (",")</li>
+            <li><strong>push</strong> (element)</li>
+            <li><strong>pop</strong> ()</li>
+            <li><strong>reverse</strong> ()</li>
+            <li><strong>shift</strong> ()</li>
+            <li><strong>slice</strong> (start, end)</li>
+            <li><strong>sort</strong> (function (e1, e2) { ... })</li>
+            <li><strong>splice</strong> (start, deleteCount, item...)</li>
+            <li><strong>unshift</strong> (item...)</li>
+          </ul>
+          <!--
+            array.concat(a, b, ...); -> shallow copy
+            array.join(..) -> string
+            array.push(element) -> appends to the end
+            array.pop() -> removes and returns last element
+            array.reverse() -> modifies and returns
+            array.shift() -> removes and returns first element
+            array.slice(start, end) -> shallow copy of part of the array
+            array.sort( compare function )
+            array.splice(start, deleteCount, item...) -> deletes items and
+                                                          replaces them,
+                                                          returns deleted
+            array.unshift(item...) -> add like push, but in beginning,
+                                      returns new length
+          -->
+        </section>
+        <section>
+          <h2>Good to know methods</h2>
+          <h4>Function</h4>
+          <br/>
+          <ul>
+            <li><strong>apply</strong> (thisArg, argArray)</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Good to know methods</h2>
+          <h4>Object</h4>
+          <br/>
+          <ul>
+            <li><strong>hasOwnProperty</strong> (name)</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Good to know methods</h2>
+          <h4>String</h4>
+          <br/>
+          <ul><small>
+            <li><strong>charAt</strong> (pos)</li>
+            <li><strong>charCodeAt</strong> (pos)</li>
+            <li><strong>concat</strong> (string...)</li>
+            <li><strong>indexOf</strong> (searchString, position)</li>
+            <li><strong>lastIndexOf</strong> (searchString, position)</li>
+            <li><strong>localeCompare</strong> (that)</li>
+            <li><strong>match</strong> (regexp)</li>
+            <li><strong>replace</strong> (searchValue, replaceValue)</li>
+            <li><strong>search</strong> (regexp)</li>
+            <li><strong>slice</strong> (start, end)</li>
+            <li><strong>split</strong> (separator, limit)</li>
+            <li><strong>substring</strong> (start, end)</li>
+            <li><strong>toLocaleLower / UpperCase</strong> ()</li>
+            <li><strong>toLower / UpperCase</strong> ()</li>
+            <li><strong>String.fromCharCode</strong> (char...)</li>
+          </small></ul>
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>Globals</h4>
+          <br/>
+          <pre><code>
+            var foo = value; // out of all scope
+            window.foo = value;
+            foo = value; // was for beginners, ended being a heavy load
+          </code></pre>
+          <!--
+            no solo son malas, son necesarias porque no tiene linker
+            formas de declararlas:
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>Scope</h4>
+          <br/>
+          <!--
+            Sintaxis C, pero solo function scope. Conviene declarar todas las
+            variables al inicio de una function.
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>Semicolon insertion</h4>
+          <br/>
+          <pre><code>
+            return
+            {
+                status: true
+            };
+          </code></pre>
+          becomes
+          <pre><code>
+            return;
+            {
+                status: true
+            };
+            // returns undefined!!!
+          </code></pre>
+          <!--
+            los ; son opcionales, JS los agrega solito. NO USAR ESTO!!!
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>typeof</h4>
+          <br/>
+          <pre><code>
+            typeof(null)
+          </code></pre>
+          <!--
+          // devuelve "object" !!!
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>parseInt</h4>
+          <br/>
+          <pre><code>
+            parseInt("16") === parseInt("16 tons") === 16
+          </code></pre>
+          <!--
+            no da error!!!
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>Operador +</h4>
+          <br/>
+          <!--
+            puede sumar o concatenar, si cualquier de los operandos es un string,
+            concatena y hace string para poder sumar AMBOS deben ser números
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>Floating point numbers</h4>
+          <br/>
+          <pre><code>
+            0.1 + 0.2 === ...
+          </code></pre>
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>NaN</h4>
+          <br/>
+          <pre><code>
+            typeof NaN === "number"
+          </code></pre>
+          <pre><code>
+            parseInt("oops") // NaN
+          </code></pre>
+          <pre><code>
+            NaN === NaN    // false
+            NaN !== NaN    // true
+          </code></pre>
+          <!--
+            una operación matemática que da NaN tienen algún operador NaN
+            para chequearlo isNaN()
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>== &amp; ===</h4>
+          <br/>
+          <pre><code>
+            "1" == 1 // true
+
+            "1" === 1 // false
+          </code></pre>
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>eval()</h4>
+          <!--
+            Es lento, llama el compilador, es inseguro, etc
+            Function() constructor funcinoa igual, y setTimeout y setInterval
+            con un string también
+            ¡Por favor no usar ninguno!
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>function statement vs. function expression</h4>
+          <br/>
+          <pre><code>
+            alert(foo()); // ERROR! foo wasn't loaded yet
+            var foo = function() { return 5; };
+          </code></pre>
+          <pre><code>
+            alert(foo()); // Alerts 5.
+            function foo() { return 5; }
+          </code></pre>
+          <!--
+            usar statement provoca 'hoisting', se mueve la declaración arriba de
+            todo al ejecutar lo cual provoca que se pueda usar una función aun
+            no declarada.
+          -->
+        </section>
+        <section>
+          <h2>Awful parts</h2>
+          <h4>new</h4>
+          <!--
+            un constructor llamado sin new vinculad this al objeto global.
+            convención de usar mayúscula inicial para constructores, o mejor ni
+            usar new
+          -->
+        </section>
+        <section>
+          <h2>JSON</h2>
+          <h4><mark>J</mark>ava<mark>S</mark>cript <mark>O</mark>bject <mark>N</mark>otation</h4>
+          <!--
+            JSON has six kinds of values: objects, arrays, strings, numbers,
+            booleans (true and false), and the special value null. Whitespace
+            (spaces, tabs, carriage returns, and newline characters) may be
+            inserted before or after any value
+            A JSON object is an unordered container of name/value pairs. A name
+            can be any string. A value can be any JSON value, including arrays
+            and objects
+
+            Usar JSON.parse y JSON.stringify
+          -->
+        </section>
+        <section>
+          <h2>Docs</h2>
+          <h3><small>Book</small></h3><br/>
+          <img src="img/js_good_parts.jpg" height="400px" />
+        </section>
+        <section>
+          <h2>Docs</h2>
+          <h3><small>Reference</small></h3><br/>
+          Mozilla MDN<br/>
+          <a href="https://developer.mozilla.org/">https://developer.mozilla.org/</a>
+        </section>
+        <section>
+          <h2>Docs</h2>
+          <h3><small>Quick Guide</small></h3><br/>
+          JavaScript The Right Way<br/>
+          <a href="http://jstherightway.org/">http://jstherightway.org/</a>
+        </section>
+        <section>
+          <h2>Conclusion</h2>
+          <img src="img/chuck_norris_approves.gif" style="border: 0px" />
+        </section>
+        <section>
+          <h2>Thanks!</h2>
+        </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
